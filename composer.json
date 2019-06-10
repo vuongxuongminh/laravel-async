@@ -48,7 +48,7 @@
         },
         "laravel": {
             "aliases": {
-                "N2W": "VXM\\Async\\AsyncFacade"
+                "Async": "VXM\\Async\\AsyncFacade"
             },
             "providers": [
                 "VXM\\Async\\ServiceProvider"
