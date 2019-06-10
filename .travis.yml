@@ -1,0 +1,20 @@
+language: php
+
+php:
+    - 7.1
+    - 7.2
+    - 7.3
+
+install:
+    - composer self-update
+    - composer install
+
+before_script:
+    - travis_retry composer self-update
+    - travis_retry composer install --no-interaction --prefer-source --dev
+
+script:
+    - vendor/bin/phpunit --testdox --coverage-text --coverage-clover=coverage.clover
+
+after_script:
+    - vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
