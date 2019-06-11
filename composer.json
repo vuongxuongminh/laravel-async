@@ -24,9 +24,6 @@
         "scrutinizer/ocular": "^1.5"
     },
     "autoload": {
-        "files": [
-            "src/helpers.php"
-        ],
         "psr-4": {
             "VXM\\Async\\": "src"
         }

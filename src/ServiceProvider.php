@@ -8,7 +8,7 @@
 
 namespace VXM\Async;
 
-use Illuminate\Console\GeneratorCommand;
+use VXM\Async\Commands\JobMakeCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
@@ -25,7 +25,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
      */
     public $singletons = [
         'async' => Async::class,
-        'command.async.make' => GeneratorCommand::class
+        'command.async.make' => JobMakeCommand::class
     ];
 
     /**

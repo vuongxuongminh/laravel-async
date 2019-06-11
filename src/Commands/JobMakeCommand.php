@@ -6,7 +6,7 @@
  * @license [MIT](https://opensource.org/licenses/MIT)
  */
 
-namespace VXM\Async\Generator;
+namespace VXM\Async\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
