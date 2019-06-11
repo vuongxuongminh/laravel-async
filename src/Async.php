@@ -144,7 +144,7 @@ class Async
     {
         if (null === $this->pool || $force) {
             return $this->pool = app(Pool::class)
-                ->autoload(config('async.autoload', __DIR__ . '/Runtime/RuntimeAutoload.php'))
+                ->autoload(config('async.autoload') ?? __DIR__ . '/Runtime/RuntimeAutoload.php')
                 ->concurrency(config('async.concurrency'))
                 ->sleepTime(config('async.sleepTime'))
                 ->timeout(config('async.timeout'));
