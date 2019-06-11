@@ -37,7 +37,7 @@ class Async
      * have three events `error`, `success`, `timeout`.
      * @return static
      */
-    public function run($job, array $events): self
+    public function run($job, array $events = []): self
     {
         $process = $this->createProcess($this->makeJob($job));
         $this->addProcessListeners($events, $process);
