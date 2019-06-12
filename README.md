@@ -100,7 +100,7 @@ If the `app/AsyncJobs` directory doesn't exist, it will be created. You may gene
 php artisan make:async-job MyJob
 ```
 
-Now we try to prepare some values before job run:
+After it created try to prepare some values before it run:
 
 ```php
 namespace App\AsyncJobs;
@@ -159,6 +159,18 @@ use App\MyHandleDependency;
 $this->app->bindMethod(MyJob::class.'@handle', function ($job, $app) {
     return $job->handle($app->make(MyHandleDependency::class));
 });
+```
+
+Now run it asynchronously:
+
+```php
+use Async;
+use App\MyModel;
+use App\AsyncJobs\MyJob;
+
+$model = App\MyModel::find(1);
+
+Async::run(new MyJob($model));
 ```
 
 ## Compare with queue
