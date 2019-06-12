@@ -48,7 +48,7 @@
                 "Async": "VXM\\Async\\AsyncFacade"
             },
             "providers": [
-                "VXM\\Async\\ServiceProvider"
+                "VXM\\Async\\AsyncServiceProvider"
             ]
         }
 	}
