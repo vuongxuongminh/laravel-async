@@ -8,7 +8,7 @@
     <a href="https://packagist.org/packages/vuongxuongminh/laravel-async"><img src="https://img.shields.io/packagist/v/vuongxuongminh/laravel-async.svg?style=flat-square" alt="Latest version"></a>
     <a href="https://travis-ci.org/vuongxuongminh/laravel-async"><img src="https://img.shields.io/travis/vuongxuongminh/laravel-async/master.svg?style=flat-square" alt="Build status"></a>
     <a href="https://scrutinizer-ci.com/g/vuongxuongminh/laravel-async"><img src="https://img.shields.io/scrutinizer/g/vuongxuongminh/laravel-async.svg?style=flat-square" alt="Quantity score"></a>
-    <a href="https://styleci.io/repos/190297766"><img src="https://styleci.io/repos/190297766" alt="StyleCI"></a>
+    <a href="https://styleci.io/repos/191031210"><img src="https://styleci.io/repos/191031210/shield?branch=master" alt="StyleCI"></a>
     <a href="https://packagist.org/packages/vuongxuongminh/laravel-async"><img src="https://img.shields.io/packagist/dt/vuongxuongminh/laravel-async.svg?style=flat-square" alt="Total download"></a>
     <a href="https://packagist.org/packages/vuongxuongminh/laravel-async"><img src="https://img.shields.io/packagist/l/vuongxuongminh/laravel-async.svg?style=flat-square" alt="License"></a>
     </p>
