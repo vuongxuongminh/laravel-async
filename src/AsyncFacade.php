@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Facade;
 class AsyncFacade extends Facade
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected static function getFacadeAccessor()
     {
