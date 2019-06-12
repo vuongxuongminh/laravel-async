@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Facade;
  */
 class AsyncFacade extends Facade
 {
-
     /**
      * @inheritDoc
      */
@@ -27,5 +26,4 @@ class AsyncFacade extends Facade
     {
         return 'async';
     }
-
 }

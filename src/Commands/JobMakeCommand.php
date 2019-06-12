@@ -14,7 +14,7 @@ use Illuminate\Console\GeneratorCommand;
  * @author Vuong Minh <vuongxuongminh@gmail.com>
  * @since 1.0.0
  */
-class JobMakeCommand  extends GeneratorCommand
+class JobMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
@@ -50,12 +50,11 @@ class JobMakeCommand  extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace.'\AsyncJobs';
     }
-
 }
