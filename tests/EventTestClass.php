@@ -18,11 +18,11 @@ class EventTestClass extends TestCase
 {
     public function success($result)
     {
-        $this->assertEquals('ok!', $result);
+        $this->assertContains('ok!', $result);
     }
 
     public function catch(Exception $exception)
     {
-        $this->assertEquals('ok!', $exception->getMessage());
+        $this->assertContains('ok!', $exception->getMessage());
     }
 }
