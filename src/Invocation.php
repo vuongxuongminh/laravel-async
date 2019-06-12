@@ -32,6 +32,6 @@ trait Invocation
             throw new RuntimeException(sprintf('`handle` method must be define in (%s)', __CLASS__));
         }
 
-        return app()->call([$this, 'handle']);
+        return app()->call([$this, $this->handleMethod]);
     }
 }
