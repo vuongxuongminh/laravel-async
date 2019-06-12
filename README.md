@@ -16,7 +16,7 @@
 
 ## About it
 
-An extension provide an easy way to run code asynchronous and parallel base on [Spatie Async](https://github.com/spatie/async) wrapper for Laravel application.
+A package provide an easy way to run code asynchronous and parallel base on [Spatie Async](https://github.com/spatie/async) wrapper for Laravel application.
 
 ## Installation
 
@@ -55,7 +55,7 @@ return [
 
     /**
      * An autoload script to boot composer autoload and laravel application.
-     * Default null meaning using an autoload of this extension.
+     * Default null meaning using an autoload of this package.
      */
     'autoload' => null,
 ];
@@ -126,7 +126,7 @@ Async::run('AsyncJobClass@handleMethod', [
 
 ## Working with complex job
 
-When working with complex job you may want to setup more before it run (ex: job depend on eloquent model). This extension provide you an Artisan command `make:async-job` to generate a job template. 
+When working with complex job you may want to setup more before it run (ex: job depend on eloquent model). This package provide you an Artisan command `make:async-job` to generate a job template. 
 By default, all of the async jobs for your application are stored in the `app/AsyncJobs` directory. 
 If the `app/AsyncJobs` directory doesn't exist, it will be created. You may generate a new async job using the Artisan CLI:
 
@@ -209,7 +209,7 @@ Async::run(new MyJob($model));
 
 ## Compare with queue
 
-You can feel this extension look like queue and thing why not using queue? 
+You can feel this package look like queue and thing why not using queue? 
 
-Queue is a good choice for common async jobs. This extension using in cases end-user need to get response in single request but 
+Queue is a good choice for common async jobs. This package using in cases end-user need to get response in single request but 
 it's a heavy things need to using several processes for calculation or IO heavy operations. And it no need to run a queue listener.
