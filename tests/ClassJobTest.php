@@ -16,20 +16,41 @@ use Async;
  */
 class ClassJobTest extends TestCase
 {
-
     public function testHandleSuccess()
     {
-        Async::run(TestClass::class);
-        $result = current(Async::wait());
+        Async::run(TestClass::class, [
+            'success' => 'VXM\Async\Tests\EventTestClass@success',
+        ]);
 
-        $this->assertEquals('ok!', $result);
+        Async::run(new TestClass, [
+            'success' => 'VXM\Async\Tests\EventTestClass@success',
+        ]);
+
+        Async::run(function () {
+            return 'ok!';
+        }, [
+            'success' => 'VXM\Async\Tests\EventTestClass@success',
+        ]);
+
+        foreach (Async::wait() as $result) {
+            $this->assertEquals('ok!', $result);
+        }
     }
 
     public function testHandleError()
     {
-        Async::run(TestClass::class . '@handleException');
-        $result = current(Async::wait());
+        Async::run(TestClass::class.'@handleException', [
+            'error' => 'VXM\Async\Tests\EventTestClass@catch',
+        ]);
 
-        $this->assertEquals(false, $result);
+        Async::run(function () {
+            throw new TestException('ok!');
+        }, [
+            'error' => 'VXM\Async\Tests\EventTestClass@catch',
+        ]);
+
+        foreach (Async::wait() as $result) {
+            $this->assertNull($result);
+        }
     }
 }

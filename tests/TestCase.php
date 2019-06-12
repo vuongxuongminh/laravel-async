@@ -9,7 +9,7 @@
 namespace VXM\Async\Tests;
 
 use VXM\Async\AsyncFacade;
-use VXM\Async\ServiceProvider;
+use VXM\Async\AsyncServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
@@ -21,7 +21,7 @@ class TestCase extends BaseTestCase
 
     protected function getPackageProviders($app)
     {
-        return [ServiceProvider::class];
+        return [AsyncServiceProvider::class];
     }
 
     protected function getPackageAliases($app)
