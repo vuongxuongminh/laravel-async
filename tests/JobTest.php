@@ -14,7 +14,7 @@ use Async;
  * @author Vuong Minh <vuongxuongminh@gmail.com>
  * @since 1.0.0
  */
-class ClassJobTest extends TestCase
+class JobTest extends TestCase
 {
     public function testHandleSuccess()
     {
