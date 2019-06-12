@@ -9,45 +9,60 @@
 namespace VXM\Async;
 
 use Closure;
-use Spatie\Async\Pool;
 use Illuminate\Support\Str;
 use Spatie\Async\Process\Runnable;
 use VXM\Async\Runtime\ParentRuntime;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>
- * @since 1.0.0
+ * @since  1.0.0
  */
 class Async
 {
-
     /**
      * A pool manage async processes.
      *
      * @var Pool
      */
-    private $pool;
+    protected $pool;
+
+    /**
+     * Event dispatcher manage async events.
+     *
+     * @var EventDispatcher
+     */
+    protected $events;
+
+    /**
+     * Create a new Async instance.
+     *
+     * @param \VXM\Async\Pool $pool
+     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     */
+    public function __construct(Pool $pool, EventDispatcher $events)
+    {
+        $this->pool = $pool;
+        $this->events = $events;
+    }
 
     /**
      * Execute async job.
      *
      * @param callable|string|object $job need to execute.
-     * @param array $events event. Have key is an event name, value is a callable triggered when event happen,
-     * have three events `error`, `success`, `timeout`.
+     * @param array $events event. Have key is an event name, value is a callable triggered when event
+     *                                       happen, have three events `error`, `success`, `timeout`.
+     *
      * @return static
      */
     public function run($job, array $events = []): self
     {
         $process = $this->createProcess($this->makeJob($job));
+        $process->then($this->makeProcessListener('success', $process));
+        $process->catch($this->makeProcessListener('error', $process));
+        $process->timeout($this->makeProcessListener('timeout', $process));
         $this->addProcessListeners($events, $process);
-
-        $process
-            ->then($this->makeProcessListener('success', $process))
-            ->catch($this->makeProcessListener('error', $process))
-            ->timeout($this->makeProcessListener('timeout', $process));
-
-        $this->getPool()->add($process);
+        $this->pool->add($process);
 
         return $this;
     }
@@ -59,8 +74,8 @@ class Async
      */
     public function wait()
     {
-        $results = $this->getPool()->wait();
-        $this->getPool(true); // change pool for next jobs
+        $results = $this->pool->wait();
+        $this->pool->flush();
 
         return $results;
     }
@@ -69,6 +84,7 @@ class Async
      * Make async job.
      *
      * @param $job
+     *
      * @return mixed
      */
     protected function makeJob($job)
@@ -84,6 +100,7 @@ class Async
      * Create class and method job.
      *
      * @param string $job
+     *
      * @return Closure
      */
     protected function createClassJob(string $job): Closure
@@ -91,10 +108,9 @@ class Async
         [$class, $method] = Str::parseCallback($job, 'handle');
 
         return function () use ($class, $method) {
-            return app()->call($class . '@' . $method);
+            return app()->call($class.'@'.$method);
         };
     }
-
 
     /**
      * Listen events of process given.
@@ -105,7 +121,7 @@ class Async
     protected function addProcessListeners(array $events, Runnable $process): void
     {
         foreach ($events as $event => $callable) {
-            Event::listen("async.{$event}_{$process->getId()}", $callable);
+            $this->events->listen("async.{$event}_{$process->getId()}", $callable);
         }
     }
 
@@ -114,12 +130,15 @@ class Async
      *
      * @param string $event
      * @param Runnable $process
+     *
      * @return callable
      */
     protected function makeProcessListener(string $event, Runnable $process): callable
     {
         return function (...$args) use ($event, $process) {
-            Event::dispatch("async.{$event}_{$process->getId()}", $args);
+            $event = "async.{$event}_{$process->getId()}";
+            $this->events->dispatch($event, $args);
+            $this->events->forget($event);
         };
     }
 
@@ -127,30 +146,11 @@ class Async
      * Create a new process for run a job.
      *
      * @param Closure $job need to execute.
+     *
      * @return Runnable process.
      */
     protected function createProcess($job): Runnable
     {
         return ParentRuntime::createProcess($job);
     }
-
-    /**
-     * Create a pool for handle jobs.
-     *
-     * @param bool $force
-     * @return Pool
-     */
-    protected function getPool(bool $force = false): Pool
-    {
-        if (null === $this->pool || $force) {
-            return $this->pool = app(Pool::class)
-                ->autoload(config('async.autoload') ?? __DIR__ . '/Runtime/RuntimeAutoload.php')
-                ->concurrency(config('async.concurrency'))
-                ->sleepTime(config('async.sleepTime'))
-                ->timeout(config('async.timeout'));
-        }
-
-        return $this->pool;
-    }
-
 }

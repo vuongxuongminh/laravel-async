@@ -16,20 +16,10 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  * @author Vuong Minh <vuongxuongminh@gmail.com>
  * @since 1.0.0
  */
-class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
+class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
     /**
-     * Services provided by this package.
-     *
-     * @var array
-     */
-    public $singletons = [
-        'async' => Async::class,
-        'command.async.make' => JobMakeCommand::class
-    ];
-
-    /**
-     * Boot
+     * Package boot
      */
     public function boot(): void
     {
@@ -42,6 +32,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
     public function register(): void
     {
         $this->mergeDefaultConfigs();
+        $this->registerServices();
         $this->registerCommands();
     }
 
@@ -51,7 +42,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
     protected function publishConfigs(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/async.php' => config_path('async.php')
+            __DIR__.'/../config/async.php' => config_path('async.php'),
         ], 'config');
     }
 
@@ -60,7 +51,7 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
      */
     protected function mergeDefaultConfigs(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/async.php', 'async');
+        $this->mergeConfigFrom(__DIR__.'/../config/async.php', 'async');
     }
 
     /**
@@ -73,12 +64,30 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
         }
     }
 
+    protected function registerServices(): void
+    {
+        $this->app->singleton('command.async.make', JobMakeCommand::class);
+
+        $this->app->singleton('async', function ($app) {
+            return new Async($app['async.pool'], $app['events']);
+        });
+
+        $this->app->singleton('async.pool', function ($app) {
+            $pool = new Pool();
+            $pool->autoload(config('async.autoload') ?? __DIR__.'/Runtime/RuntimeAutoload.php');
+            $pool->concurrency(config('async.concurrency'));
+            $pool->timeout(config('async.timeout'));
+            $pool->sleepTime(config('async.sleepTime'));
+
+            return $pool;
+        });
+    }
+
     /**
      * @inheritDoc
      */
     public function provides()
     {
-        return ['async', 'command.async.make'];
+        return ['async', 'async.pool', 'command.async.make'];
     }
-
 }

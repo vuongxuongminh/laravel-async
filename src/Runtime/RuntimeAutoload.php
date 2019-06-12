@@ -14,7 +14,6 @@ use Illuminate\Contracts\Console\Kernel as KernelContract;
 
 new class
 {
-
     /**
      *  Turn the light on.
      */
@@ -31,11 +30,12 @@ new class
     protected function registerComposerAutoload(): void
     {
         $autoloadFiles = [
-            __DIR__ . '/../../../../autoload.php',
-            __DIR__ . '/../../../autoload.php',
-            __DIR__ . '/../../vendor/autoload.php',
-            __DIR__ . '/../../../vendor/autoload.php',
+            __DIR__.'/../../../../autoload.php',
+            __DIR__.'/../../../autoload.php',
+            __DIR__.'/../../vendor/autoload.php',
+            __DIR__.'/../../../vendor/autoload.php',
         ];
+
         $autoloadFile = current(array_filter($autoloadFiles, function (string $path) {
             return file_exists($path);
         }));
@@ -64,7 +64,7 @@ new class
      */
     protected function makeApplication(): Application
     {
-        if (!file_exists($basePath = $_SERVER['argv'][3] ?? null)) {
+        if (! file_exists($basePath = $_SERVER['argv'][3] ?? null)) {
             throw new InvalidArgumentException('No application base path provided in child process.');
         }
 
@@ -73,6 +73,4 @@ new class
 
         return $app;
     }
-
-
 };
