@@ -12,7 +12,7 @@ return [
     'timeout' => 15,
 
     /**
-     * Sleep (micro second) time when waiting async processes.
+     * Sleep (micro-second) time when waiting async processes.
      */
     'sleepTime' => 50000,
 

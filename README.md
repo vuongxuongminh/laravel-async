@@ -26,6 +26,40 @@ Require Laravel Async using [Composer](https://getcomposer.org):
 composer require vxm/laravel-async
 ```
 
+The package will automatically register itself.
+
+You can publish the config-file (optional) with:
+
+```php
+php artisan vendor:publish --provider="VXM\Async\AsyncServiceProvider" --tag="config"
+```
+
+This is the contents of the published config file:
+
+```php
+return [
+    /**
+     * Maximum concurrency async processes.
+     */
+    'concurrency' => 20,
+
+    /**
+     * Async process timeout.
+     */
+    'timeout' => 15,
+
+    /**
+     * Sleep (micro-second) time when waiting async processes.
+     */
+    'sleepTime' => 50000,
+
+    /**
+     * An autoload script to boot composer autoload and laravel application.
+     * Default null meaning using an autoload of this extension.
+     */
+    'autoload' => null,
+];
+```
 ## Usage
 
 ### Run async code
