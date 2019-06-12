@@ -16,7 +16,6 @@ use VXM\Async\Invocation;
  */
 class TestClass
 {
-
     use Invocation;
 
     public function handle()

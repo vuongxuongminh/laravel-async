@@ -5,15 +5,13 @@
  * @copyright (c) Vuong Xuong Minh
  * @license [MIT](https://opensource.org/licenses/MIT)
  */
-
 define('LARAVEL_START', microtime(true));
 
 use VXM\Async\Runtime\KernelRuntime;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 
-new class
-{
+new class {
     /**
      *  Turn the light on.
      */

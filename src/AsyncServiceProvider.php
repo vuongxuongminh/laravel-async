@@ -19,7 +19,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
     /**
-     * Package boot
+     * Package boot.
      */
     public function boot(): void
     {
@@ -27,7 +27,7 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function register(): void
     {
@@ -84,7 +84,7 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function provides()
     {

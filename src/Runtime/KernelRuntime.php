@@ -17,7 +17,7 @@ use Illuminate\Foundation\Console\Kernel;
 class KernelRuntime extends Kernel
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected $commandsLoaded = true;
 }

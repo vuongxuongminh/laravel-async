@@ -18,7 +18,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
  */
 class TestCase extends BaseTestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [AsyncServiceProvider::class];
@@ -27,7 +26,7 @@ class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'Async' => AsyncFacade::class
+            'Async' => AsyncFacade::class,
         ];
     }
 }

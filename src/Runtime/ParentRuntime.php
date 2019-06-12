@@ -23,7 +23,7 @@ use Spatie\Async\Runtime\ParentRuntime as BaseParentRuntime;
 class ParentRuntime extends BaseParentRuntime
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function createProcess($task): Runnable
     {

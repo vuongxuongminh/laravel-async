@@ -18,7 +18,7 @@ use Spatie\Async\Process\SynchronousProcess as BaseSynchronousProcess;
 class SynchronousProcess extends BaseSynchronousProcess
 {
     /**
-     * Hotfix: https://github.com/spatie/async/pull/73
+     * Hotfix: https://github.com/spatie/async/pull/73.
      *
      * @return Throwable
      */
