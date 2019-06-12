@@ -8,11 +8,11 @@
 namespace VXM\Async\Runtime;
 
 use Spatie\Async\Pool;
-use Spatie\Async\Process\ParallelProcess;
 use Spatie\Async\Process\Runnable;
-use Spatie\Async\Process\SynchronousProcess;
-use Spatie\Async\Runtime\ParentRuntime as BaseParentRuntime;
 use Symfony\Component\Process\Process;
+use Spatie\Async\Process\ParallelProcess;
+use VXM\Async\Process\SynchronousProcess;
+use Spatie\Async\Runtime\ParentRuntime as BaseParentRuntime;
 
 /**
  * ParentRuntime support invoke console environment in child runtime mode.
@@ -22,18 +22,17 @@ use Symfony\Component\Process\Process;
  */
 class ParentRuntime extends BaseParentRuntime
 {
-
     /**
      * @inheritDoc
      */
     public static function createProcess($task): Runnable
     {
-        if (!self::$isInitialised) {
+        if (! self::$isInitialised) {
             self::init();
         }
 
-        if (!Pool::isSupported()) {
-            return SynchronousProcess::create($task, self::getId());
+        if (! Pool::isSupported()) {
+            return new SynchronousProcess($task, self::getId());
         }
 
         $process = new Process(implode(' ', [
@@ -41,10 +40,9 @@ class ParentRuntime extends BaseParentRuntime
             self::$childProcessScript,
             self::$autoloader,
             self::encodeTask($task),
-            base_path()
+            base_path(),
         ]));
 
-        return ParallelProcess::create($process, self::getId());
+        return new ParallelProcess($process, self::getId());
     }
-
 }
