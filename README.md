@@ -100,7 +100,7 @@ If the `app/AsyncJobs` directory doesn't exist, it will be created. You may gene
 php artisan make:async-job MyJob
 ```
 
-After it created try to prepare some values before it run:
+After created it, you need to prepare your job structure, example:
 
 ```php
 namespace App\AsyncJobs;
