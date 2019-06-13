@@ -54,7 +54,7 @@ return [
     'sleepTime' => 50000,
 
     /**
-     * An autoload script to boot composer autoload and laravel application.
+     * An autoload script to boot composer autoload and Laravel application.
      * Default null meaning using an autoload of this package.
      */
     'autoload' => null,
@@ -126,7 +126,7 @@ Async::run('AsyncJobClass@handleMethod', [
 
 ## Working with complex job
 
-When working with complex job you may want to setup more before it run (ex: job depend on eloquent model). This package provide you an Artisan command `make:async-job` to generate a job template. 
+When working with complex job you may want to setup more before it run (ex: job depend on Eloquent model). This package provide you an Artisan command `make:async-job` to generate a job template. 
 By default, all of the async jobs for your application are stored in the `app/AsyncJobs` directory. 
 If the `app/AsyncJobs` directory doesn't exist, it will be created. You may generate a new async job using the Artisan CLI:
 
@@ -183,7 +183,7 @@ It's all totally transparent to your application and prevents issues that can ar
 The `handle` method is called when the job is processed in async process. Note that we are able to type-hint dependencies on the handle method of the job. 
 The Laravel service container automatically injects these dependencies.
 
-If you would like to take total control over how the container injects dependencies into the handle method, you may use the container's bindMethod method. The bindMethod method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the handle method however you wish. 
+If you would like to take total control over how the container injects dependencies into the handle method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the handle method however you wish. 
 Typically, you should call this method from a service provider:
 
 ```php

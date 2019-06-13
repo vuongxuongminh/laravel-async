@@ -17,7 +17,7 @@ return [
     'sleepTime' => 50000,
 
     /*
-     * An autoload script to boot composer autoload and laravel application.
+     * An autoload script to boot composer autoload and Laravel application.
      * Default null meaning using an autoload of async extension.
      */
     'autoload' => null,

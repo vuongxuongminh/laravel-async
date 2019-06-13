@@ -145,7 +145,7 @@ class Async
     /**
      * Create a new process for run a job.
      *
-     * @param Closure $job need to execute.
+     * @param callable $job need to execute.
      *
      * @return Runnable process.
      */

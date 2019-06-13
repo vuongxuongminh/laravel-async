@@ -55,7 +55,7 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     }
 
     /**
-     * Register command to an artisan.
+     * Register package commands.
      */
     protected function registerCommands(): void
     {
@@ -64,6 +64,9 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
         }
     }
 
+    /**
+     * Register package services.
+     */
     protected function registerServices(): void
     {
         $this->app->singleton('command.async.make', JobMakeCommand::class);
