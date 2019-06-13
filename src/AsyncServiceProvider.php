@@ -27,16 +27,6 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function register(): void
-    {
-        $this->mergeDefaultConfigs();
-        $this->registerServices();
-        $this->registerCommands();
-    }
-
-    /**
      * Publish async config files.
      */
     protected function publishConfigs(): void
@@ -47,21 +37,21 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function register(): void
+    {
+        $this->mergeDefaultConfigs();
+        $this->registerServices();
+        $this->registerCommands();
+    }
+
+    /**
      * Merge default async config to config service.
      */
     protected function mergeDefaultConfigs(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/async.php', 'async');
-    }
-
-    /**
-     * Register package commands.
-     */
-    protected function registerCommands(): void
-    {
-        if ($this->app->runningInConsole()) {
-            $this->commands(['command.async.make']);
-        }
     }
 
     /**
@@ -77,19 +67,30 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
 
         $this->app->singleton('async.pool', function ($app) {
             $pool = new Pool();
-            $pool->autoload(config('async.autoload') ?? __DIR__.'/Runtime/RuntimeAutoload.php');
-            $pool->concurrency(config('async.concurrency'));
-            $pool->timeout(config('async.timeout'));
-            $pool->sleepTime(config('async.sleepTime'));
+            $config = $app['config'];
+            $pool->autoload($config->get('async.autoload') ?? __DIR__.'/Runtime/RuntimeAutoload.php');
+            $pool->concurrency($config->get('async.concurrency'));
+            $pool->timeout($config->get('async.timeout'));
+            $pool->sleepTime($config->get('async.sleepTime'));
 
             return $pool;
         });
     }
 
     /**
+     * Register package commands.
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands(['command.async.make']);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function provides()
+    public function provides(): array
     {
         return ['async', 'async.pool', 'command.async.make'];
     }
