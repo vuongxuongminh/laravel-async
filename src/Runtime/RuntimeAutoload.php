@@ -23,7 +23,7 @@ new class {
     }
 
     /**
-     * Find and load composer autoload.
+     * Find and load Composer autoload.
      */
     protected function registerComposerAutoload(): void
     {
@@ -39,7 +39,7 @@ new class {
         }));
 
         if (false === $autoloadFile) {
-            throw new RuntimeException('Composer autoloader not found!');
+            throw new RuntimeException('Composer autoload not found!');
         }
 
         require $autoloadFile;
