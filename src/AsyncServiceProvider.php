@@ -67,11 +67,11 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
 
         $this->app->singleton('async.pool', function ($app) {
             $pool = new Pool();
-            $config = $app['config'];
-            $pool->autoload($config->get('async.autoload') ?? __DIR__.'/Runtime/RuntimeAutoload.php');
-            $pool->concurrency($config->get('async.concurrency'));
-            $pool->timeout($config->get('async.timeout'));
-            $pool->sleepTime($config->get('async.sleepTime'));
+            $config = $app['config']->get('async');
+            $pool->autoload($config['autoload'] ?? __DIR__.'/Runtime/RuntimeAutoload.php');
+            $pool->concurrency($config['concurrency']);
+            $pool->timeout($config['timeout']);
+            $pool->sleepTime($config['sleepTime']);
 
             return $pool;
         });
