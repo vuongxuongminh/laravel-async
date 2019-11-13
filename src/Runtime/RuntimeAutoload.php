@@ -7,9 +7,9 @@
  */
 define('LARAVEL_START', microtime(true));
 
-use VXM\Async\Runtime\KernelRuntime;
-use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
+use Illuminate\Foundation\Application;
+use VXM\Async\Runtime\KernelRuntime;
 
 new class {
     /**
