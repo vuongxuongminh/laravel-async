@@ -35,14 +35,14 @@ class ParentRuntime extends BaseParentRuntime
             return new SynchronousProcess($task, self::getId());
         }
 
-        $process = new Process(implode(' ', [
-            'exec php',
+        $process = new Process([
+            'php',
             self::$childProcessScript,
             self::$autoloader,
             self::encodeTask($task),
             $outputLength,
             base_path()
-        ]));
+        ]);
 
         return new ParallelProcess($process, self::getId());
     }
