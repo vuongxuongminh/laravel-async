@@ -15,11 +15,11 @@
     ],
     "require": {
         "php": "^7.1",
-        "illuminate/support": "^5.7",
+        "illuminate/support": "^5.7 || ^6.0",
         "spatie/async": "^1.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^3.7",
+        "orchestra/testbench": "^3.7 || ^4.0",
         "phpunit/phpunit": "~7.5",
         "scrutinizer/ocular": "^1.5"
     },
