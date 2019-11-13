@@ -41,7 +41,7 @@ class ParentRuntime extends BaseParentRuntime
             self::$autoloader,
             self::encodeTask($task),
             $outputLength,
-            base_path()
+            base_path(),
         ]);
 
         return new ParallelProcess($process, self::getId());
