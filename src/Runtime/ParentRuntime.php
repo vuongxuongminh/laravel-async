@@ -25,7 +25,7 @@ class ParentRuntime extends BaseParentRuntime
     /**
      * {@inheritdoc}
      */
-    public static function createProcess($task): Runnable
+    public static function createProcess($task, ?int $outputLength = null): Runnable
     {
         if (! self::$isInitialised) {
             self::init();
@@ -40,7 +40,8 @@ class ParentRuntime extends BaseParentRuntime
             self::$childProcessScript,
             self::$autoloader,
             self::encodeTask($task),
-            base_path(),
+            $outputLength,
+            base_path()
         ]));
 
         return new ParallelProcess($process, self::getId());
