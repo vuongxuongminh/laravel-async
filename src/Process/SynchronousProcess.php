@@ -8,8 +8,8 @@
 
 namespace VXM\Async\Process;
 
-use Throwable;
 use Spatie\Async\Process\SynchronousProcess as BaseSynchronousProcess;
+use Throwable;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>

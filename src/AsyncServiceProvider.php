@@ -8,9 +8,9 @@
 
 namespace VXM\Async;
 
-use VXM\Async\Commands\JobMakeCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use VXM\Async\Commands\JobMakeCommand;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>

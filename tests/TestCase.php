@@ -8,9 +8,9 @@
 
 namespace VXM\Async\Tests;
 
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use VXM\Async\AsyncFacade;
 use VXM\Async\AsyncServiceProvider;
-use Orchestra\Testbench\TestCase as BaseTestCase;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>

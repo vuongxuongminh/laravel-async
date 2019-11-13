@@ -9,10 +9,10 @@
 namespace VXM\Async;
 
 use Closure;
+use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 use Illuminate\Support\Str;
 use Spatie\Async\Process\Runnable;
 use VXM\Async\Runtime\ParentRuntime;
-use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>
