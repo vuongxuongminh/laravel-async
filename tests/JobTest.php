@@ -33,7 +33,7 @@ class JobTest extends TestCase
         ]);
 
         foreach (Async::wait() as $result) {
-            $this->assertContains('ok!', $result);
+            $this->assertStringContainsString('ok!', $result);
         }
     }
 

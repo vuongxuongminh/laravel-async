@@ -14,6 +14,7 @@ use Throwable;
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>
  * @since 1.0.0
+ * @deprecated https://github.com/spatie/async/pull/73 had solved. This class will be remove on version 2.
  */
 class SynchronousProcess extends BaseSynchronousProcess
 {
