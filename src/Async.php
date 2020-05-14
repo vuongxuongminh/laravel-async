@@ -68,6 +68,29 @@ class Async
     }
 
     /**
+     * Batch execute async jobs.
+     *
+     * @param array $jobs
+     * @return static
+     * @see run()
+     * @since 2.0.0
+     */
+    public function batchRun(...$jobs): self
+    {
+        foreach ($jobs as $job) {
+            if (is_array($job)) {
+                [$job, $events] = $job;
+            } else {
+                $events = [];
+            }
+
+            $this->run($job, $events);
+        }
+
+        return $this;
+    }
+
+    /**
      * Wait until all async jobs done and return job results.
      *
      * @return array

@@ -16,41 +16,83 @@ use Async;
  */
 class JobTest extends TestCase
 {
-    public function testHandleSuccess()
+    /**
+     * @dataProvider successJobProvider
+     */
+    public function testHandleSuccess($handler, array $events)
     {
-        Async::run(TestClass::class, [
-            'success' => 'VXM\Async\Tests\EventTestClass@success',
-        ]);
+        Async::run($handler, $events);
 
-        Async::run(new TestClass, [
-            'success' => 'VXM\Async\Tests\EventTestClass@success',
-        ]);
+        $this->assertStringContainsString('ok!', current(Async::wait()));
+    }
 
-        Async::run(function () {
-            return 'ok!';
-        }, [
-            'success' => 'VXM\Async\Tests\EventTestClass@success',
-        ]);
+    public function testBatchHandleSuccess()
+    {
+        Async::batchRun(...$this->successJobProvider());
 
         foreach (Async::wait() as $result) {
             $this->assertStringContainsString('ok!', $result);
         }
     }
 
-    public function testHandleError()
+    /**
+     * @dataProvider errorJobProvider
+     */
+    public function testHandleError($handler, array $events)
     {
-        Async::run(TestClass::class.'@handleException', [
-            'error' => 'VXM\Async\Tests\EventTestClass@catch',
-        ]);
+        Async::run($handler, $events);
+        $this->assertEmpty(Async::wait());
+    }
 
-        Async::run(function () {
-            throw new TestException('ok!');
-        }, [
-            'error' => 'VXM\Async\Tests\EventTestClass@catch',
-        ]);
+    public function testBatchHandleError()
+    {
+        Async::batchRun(...$this->errorJobProvider());
+        $this->assertEmpty(Async::wait());
+    }
 
-        foreach (Async::wait() as $result) {
-            $this->assertNull($result);
-        }
+    public function successJobProvider(): array
+    {
+        return [
+            [
+                TestClass::class,
+                [
+                    'success' => 'VXM\Async\Tests\EventTestClass@success',
+                ],
+            ],
+            [
+                new TestClass,
+                [
+                    'success' => 'VXM\Async\Tests\EventTestClass@success',
+                ],
+            ],
+            [
+                function () {
+                    return 'ok!';
+                },
+                [
+                    'success' => 'VXM\Async\Tests\EventTestClass@success',
+                ],
+            ],
+        ];
+    }
+
+    public function errorJobProvider(): array
+    {
+        return [
+            [
+                TestClass::class.'@handleException',
+                [
+                    'error' => 'VXM\Async\Tests\EventTestClass@catch',
+                ],
+            ],
+            [
+                function () {
+                    throw new TestException('ok!');
+                },
+                [
+                    'error' => 'VXM\Async\Tests\EventTestClass@catch',
+                ],
+            ],
+        ];
     }
 }

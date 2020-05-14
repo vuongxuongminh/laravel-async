@@ -91,6 +91,15 @@ Async::run('Your\AsyncJobs\Class@jobB');
 Async::run('Your\AsyncJobs\Class@jobC');
 Async::run('Your\AsyncJobs\Class@jobD');
 
+// Another way:
+
+Async::batchRun(
+    'Your\AsyncJobs\Class@jobA',
+    'Your\AsyncJobs\Class@jobB',
+    'Your\AsyncJobs\Class@jobC',
+    'Your\AsyncJobs\Class@jobD'
+);
+
 $results = Async::wait(); // result return from jobs above
 ```
 
@@ -122,6 +131,12 @@ Async::run('AsyncJobClass@handleMethod', [
     'timeout' => 'AsyncJobEventListener@handleTimeout',
     'error' => 'AsyncJobEventListener@handleError'
 ]);
+
+Async::batchRun(
+    ['AsyncJobClassA@handleMethod', ['success' => 'AsyncJobEventListenerA@handleSuccess']],
+    ['AsyncJobClassB@handleMethod', ['success' => 'AsyncJobEventListenerB@handleSuccess']],
+    ['AsyncJobClassC@handleMethod', ['success' => 'AsyncJobEventListenerC@handleSuccess']]
+);
 ```
 
 ## Working with complex job
@@ -205,6 +220,15 @@ use App\AsyncJobs\MyJob;
 $model = App\MyModel::find(1);
 
 Async::run(new MyJob($model));
+
+// or batch run with multiple models:
+
+$model2 = App\MyModel::find(2);
+
+Async::batchRun(
+    new MyJob($model),
+    new MyJob($model2)
+);
 ```
 
 ## Compare with queue
