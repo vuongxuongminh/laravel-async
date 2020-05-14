@@ -76,7 +76,6 @@ class JobTest extends TestCase
         ];
     }
 
-
     public function errorJobProvider(): array
     {
         return [
