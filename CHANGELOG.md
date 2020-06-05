@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Allowed Laravel 7.x.
+
 ## 2.0.0
 
 - Add `batchRun` method.
