@@ -7,9 +7,7 @@
  */
 define('LARAVEL_START', microtime(true));
 
-use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Foundation\Application;
-use VXM\Async\Runtime\KernelRuntime;
 
 new class {
     /**
@@ -52,7 +50,7 @@ new class {
      */
     protected function boot(Application $app): void
     {
-        $app[KernelContract::class]->bootstrap();
+        $app[Illuminate\Contracts\Console\Kernel::class]->bootstrap();
     }
 
     /**
@@ -67,7 +65,19 @@ new class {
         }
 
         $app = new Application($basePath);
-        $app->singleton(KernelContract::class, KernelRuntime::class);
+
+        $app->singleton(
+            Illuminate\Contracts\Console\Kernel::class,
+            class_exists(App\Console\Kernel::class) ? App\Console\Kernel::class : Illuminate\Foundation\Console\Kernel::class
+        );
+        $app->singleton(
+            Illuminate\Contracts\Http\Kernel::class,
+            class_exists(App\Http\Kernel::class) ? App\Http\Kernel::class : Illuminate\Foundation\Http\Kernel::class
+        );
+        $app->singleton(
+            Illuminate\Contracts\Debug\ExceptionHandler::class,
+            class_exists(App\Exceptions\Handler::class) ? App\Exceptions\Handler::class : Illuminate\Foundation\Exceptions\Handler::class
+        );
 
         return $app;
     }

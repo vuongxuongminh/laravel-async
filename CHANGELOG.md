@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- Bug #11: Fix missing ExceptionHandler concrete.
+
 ## 2.0.1
 
 - Allowed Laravel 7.x.
