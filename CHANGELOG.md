@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.3
+
+- Add support Laravel 8.
+
 ## 2.0.2
 
 - Bug #11: Fix missing ExceptionHandler concrete.
