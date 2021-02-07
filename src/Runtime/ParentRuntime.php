@@ -27,11 +27,11 @@ class ParentRuntime extends BaseParentRuntime
      */
     public static function createProcess($task, ?int $outputLength = null, ?string $binary = 'php'): Runnable
     {
-        if (! self::$isInitialised) {
+        if (!self::$isInitialised) {
             self::init();
         }
 
-        if (! Pool::isSupported()) {
+        if (!Pool::isSupported()) {
             return new SynchronousProcess($task, self::getId());
         }
 

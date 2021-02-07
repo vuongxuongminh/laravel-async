@@ -28,7 +28,7 @@ trait Invocation
      */
     public function __invoke()
     {
-        if (! method_exists($this, $this->handleMethod)) {
+        if (!method_exists($this, $this->handleMethod)) {
             throw new RuntimeException(sprintf('`handle` method must be define in (%s)', __CLASS__));
         }
 
