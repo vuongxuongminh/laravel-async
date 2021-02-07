@@ -9,6 +9,8 @@
 namespace VXM\Async;
 
 use Spatie\Async\Pool as BasePool;
+use Spatie\Async\Process\Runnable;
+use VXM\Async\Runtime\ParentRuntime;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>
@@ -16,6 +18,13 @@ use Spatie\Async\Pool as BasePool;
  */
 class Pool extends BasePool
 {
+    /**
+     * Default processes output length.
+     *
+     * @var int
+     */
+    protected $defaultOutputLength = 10240;
+
     /**
      * Flush the pool.
      */
@@ -27,5 +36,34 @@ class Pool extends BasePool
         $this->queue = [];
         $this->failed = [];
         $this->results = [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function add($process, int $outputLength = null): Runnable
+    {
+        $outputLength = $outputLength ?? $this->defaultOutputLength;
+
+        if (is_callable($process)) {
+            $process = ParentRuntime::createProcess(
+                $process,
+                $outputLength,
+                $this->binary
+            );
+        }
+
+        return parent::add($process, $outputLength);
+    }
+
+    /**
+     * Set default output length of child processes.
+     *
+     * @param  int  $defaultOutputLength
+     * @since 2.1.0
+     */
+    public function defaultOutputLength(int $defaultOutputLength): void
+    {
+        $this->defaultOutputLength = $defaultOutputLength;
     }
 }

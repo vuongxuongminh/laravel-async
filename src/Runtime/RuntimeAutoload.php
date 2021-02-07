@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://github.com/vuongxuongminh/laravel-async
  *
@@ -46,7 +47,7 @@ new class {
     /**
      * Boot an application.
      *
-     * @param Application $app
+     * @param  Application  $app
      */
     protected function boot(Application $app): void
     {

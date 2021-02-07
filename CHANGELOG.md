@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0
+
+- Add support PHP 8.
+- Add `defaultOutputLength` configurable to config default output length of async processes.
+- Add `withBinary` configurable to config PHP binary use in async processes.
+- Deprecated `Async::createProcess` method.
+- Add `Async::getPool` method support get current pool using.
+
 ## 2.0.3
 
 - Add support Laravel 8.

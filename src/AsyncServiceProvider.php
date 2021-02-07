@@ -72,6 +72,8 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
             $pool->concurrency($config['concurrency']);
             $pool->timeout($config['timeout']);
             $pool->sleepTime($config['sleepTime']);
+            $pool->defaultOutputLength($config['defaultOutputLength']);
+            $pool->withBinary($config['withBinary']);
 
             return $pool;
         });
