@@ -65,7 +65,7 @@ return [
 
     /*
      * An autoload script to boot composer autoload and Laravel application.
-     * Default null meaning using an autoload of async extension.
+     * Default null meaning using an autoload of this package.
      */
     'autoload' => null,
 ];
