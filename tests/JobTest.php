@@ -50,6 +50,13 @@ class JobTest extends TestCase
         $this->assertEmpty(Async::wait());
     }
 
+    public function testMaxOutputLength()
+    {
+        Async::getPool()->defaultOutputLength(2);
+        Async::run(TestClass::class);
+        $this->assertEmpty(Async::wait());
+    }
+
     public function successJobProvider(): array
     {
         return [
