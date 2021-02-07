@@ -37,8 +37,8 @@ class Async
     /**
      * Create a new Async instance.
      *
-     * @param \VXM\Async\Pool $pool
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     * @param  \VXM\Async\Pool  $pool
+     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      */
     public function __construct(Pool $pool, EventDispatcher $events)
     {
@@ -49,20 +49,21 @@ class Async
     /**
      * Execute async job.
      *
-     * @param callable|string|object $job need to execute.
-     * @param array $events event. Have key is an event name, value is a callable triggered when event
+     * @param  callable|string|object  $job  need to execute.
+     * @param  array  $events  event. Have key is an event name, value is a callable triggered when event
      *                                       happen, have three events `error`, `success`, `timeout`.
-     *
+     * @param  int|null  $outputLength
      * @return static
      */
-    public function run($job, array $events = []): self
+    public function run($job, array $events = [], int $outputLength = null): self
     {
-        $process = $this->createProcess($this->makeJob($job));
+        $process = $this->pool->add($this->makeJob($job), $outputLength);
+
+        $this->addProcessListeners($events, $process);
+
         $process->then($this->makeProcessListener('success', $process));
         $process->catch($this->makeProcessListener('error', $process));
         $process->timeout($this->makeProcessListener('timeout', $process));
-        $this->addProcessListeners($events, $process);
-        $this->pool->add($process);
 
         return $this;
     }
@@ -70,7 +71,7 @@ class Async
     /**
      * Batch execute async jobs.
      *
-     * @param array $jobs
+     * @param  array  $jobs
      * @return static
      * @see run()
      * @since 2.0.0
@@ -78,13 +79,18 @@ class Async
     public function batchRun(...$jobs): self
     {
         foreach ($jobs as $job) {
+            $events = [];
+            $outputLength = null;
+
             if (is_array($job)) {
-                [$job, $events] = $job;
-            } else {
-                $events = [];
+                if (count($job) === 2) {
+                    [$job, $events] = $job;
+                } else {
+                    [$job, $events, $outputLength] = $job;
+                }
             }
 
-            $this->run($job, $events);
+            $this->run($job, $events, $outputLength);
         }
 
         return $this;
@@ -122,7 +128,7 @@ class Async
     /**
      * Create class and method job.
      *
-     * @param string $job
+     * @param  string  $job
      *
      * @return Closure
      */
@@ -138,8 +144,8 @@ class Async
     /**
      * Listen events of process given.
      *
-     * @param array $events
-     * @param Runnable $process
+     * @param  array  $events
+     * @param  Runnable  $process
      */
     protected function addProcessListeners(array $events, Runnable $process): void
     {
@@ -151,8 +157,8 @@ class Async
     /**
      * Make a base listener for integration with [[EventDispatcher]].
      *
-     * @param string $event
-     * @param Runnable $process
+     * @param  string  $event
+     * @param  Runnable  $process
      *
      * @return callable
      */
@@ -168,12 +174,24 @@ class Async
     /**
      * Create a new process for run a job.
      *
-     * @param callable $job need to execute.
+     * @param  callable  $job  need to execute.
      *
      * @return Runnable process.
+     * @deprecated since 2.1.0
      */
     protected function createProcess($job): Runnable
     {
         return ParentRuntime::createProcess($job);
+    }
+
+    /**
+     * Get current pool.
+     *
+     * @return Pool
+     * @since 2.1.0
+     */
+    public function getPool(): Pool
+    {
+        return $this->pool;
     }
 }
