@@ -38,22 +38,32 @@ This is the contents of the published config file:
 
 ```php
 return [
-    /**
+    /*
+     * The PHP binary will be use in async processes.
+     */
+    'withBinary' => PHP_BINARY,
+
+    /*
      * Maximum concurrency async processes.
      */
     'concurrency' => 20,
 
-    /**
+    /*
      * Async process timeout.
      */
     'timeout' => 15,
 
-    /**
+    /*
      * Sleep (micro-second) time when waiting async processes.
      */
     'sleepTime' => 50000,
 
-    /**
+    /*
+     * Default output length of async processes.
+     */
+    'defaultOutputLength' => 1024 * 10,
+
+    /*
      * An autoload script to boot composer autoload and Laravel application.
      * Default null meaning using an autoload of this package.
      */
@@ -65,6 +75,25 @@ return [
 ### Run async code
 
 After install, now you can try run async code via `Async` facade:
+
+```php
+use Async;
+
+for ($i = 1; $i < 20; $i++) {
+    Async::run(function () use ($i) {
+        sleep(1);
+
+        return $i;
+    });
+}
+
+var_dump(implode(', ', Async::wait()));
+
+// Output value may be like:
+// string(65) "5, 2, 1, 14, 4, 6, 7, 8, 19, 16, 12, 18, 13, 3, 10, 9, 11, 17, 15"
+```
+
+An async job can be callable class, anonymous function or Laravel callback:
 
 ```php
 use Async;
