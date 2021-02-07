@@ -61,7 +61,7 @@ new class {
      */
     protected function makeApplication(): Application
     {
-        if (!file_exists($basePath = $_SERVER['argv'][4] ?? null)) {
+        if (! file_exists($basePath = $_SERVER['argv'][4] ?? null)) {
             throw new InvalidArgumentException('No application base path provided in child process.');
         }
 
