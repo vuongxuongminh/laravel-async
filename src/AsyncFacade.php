@@ -11,7 +11,7 @@ namespace VXM\Async;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static Async run(callable|string $job, $listener)
+ * @method static Async run(callable|string $job, $listener = null)
  * @method static array wait()
  *
  * @author Vuong Minh <vuongxuongminh@gmail.com>
