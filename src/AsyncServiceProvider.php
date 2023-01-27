@@ -35,7 +35,6 @@ class AsyncServiceProvider extends BaseServiceProvider
         ], 'config');
     }
 
-
     public function register(): void
     {
         $this->mergeDefaultConfigs();

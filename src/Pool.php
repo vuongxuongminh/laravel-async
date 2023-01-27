@@ -36,7 +36,6 @@ class Pool extends BasePool
         $this->results = [];
     }
 
-
     public function add($process, int $outputLength = null): Runnable
     {
         $outputLength = $outputLength ?? $this->defaultOutputLength;
