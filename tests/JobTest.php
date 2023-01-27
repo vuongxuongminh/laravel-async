@@ -9,6 +9,7 @@
 namespace VXM\Async\Tests;
 
 use Async;
+use VXM\Async\Pool;
 
 class JobTest extends TestCase
 {
@@ -37,20 +38,30 @@ class JobTest extends TestCase
     public function testHandleError($handler, array $events): void
     {
         Async::run($handler, $events);
-        $this->assertEmpty(Async::wait());
+        $results = array_filter(Async::wait());
+
+        $this->assertEmpty($results);
     }
 
     public function testBatchHandleError(): void
     {
         Async::batchRun(...$this->errorJobProvider());
-        $this->assertEmpty(Async::wait());
+        $results = array_filter(Async::wait());
+
+        $this->assertEmpty($results);
     }
 
     public function testMaxOutputLength(): void
     {
         Async::getPool()->defaultOutputLength(2);
         Async::run(TestClass::class);
-        $this->assertEmpty(Async::wait());
+        $results = array_filter(Async::wait());
+
+        if (Pool::isSupported()) {
+            $this->assertEmpty($results);
+        } else {
+            $this->assertEquals('ok!', $results[0]);
+        }
     }
 
     public function successJobProvider(): array
@@ -83,7 +94,7 @@ class JobTest extends TestCase
     {
         return [
             [
-                TestClass::class . '@handleException',
+                TestClass::class.'@handleException',
                 [
                     'error' => 'VXM\Async\Tests\EventTestClass@catch',
                 ],

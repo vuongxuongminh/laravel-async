@@ -16,8 +16,7 @@ class AsyncTest extends TestCase
 {
     public function testAsync()
     {
-        /** @var Pool $pool */
-        $pool = app('async.pool');
+        $current = time();
 
         for ($i = 0; $i < 10; ++$i) {
             Async::run(function () use ($i) {
@@ -27,7 +26,6 @@ class AsyncTest extends TestCase
             });
         }
 
-        $current = time();
         $results = Async::wait();
 
         if (Pool::isSupported()) {

@@ -13,11 +13,11 @@ jobs:
             matrix:
                 php:
                     - 8.1
-                extensions:
-                    - none, ext-dom, mbstring, curl, pcntl
-                    - none, ext-dom, mbstring, curl
+                posix:
+                    - true
+                    - false
 
-        name: PHP ${{ matrix.php }} tests
+        name: "${{ format('Tests on PHP {0} {1}', matrix.php, matrix.posix && 'with posix' || 'without posix') }}"
 
         steps:
             -   uses: actions/checkout@v2
@@ -26,7 +26,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     coverage: pcov
-                    extensions:  ${{ matrix.extensions }}
+                    extensions: "${{ matrix.posix && 'none, posix' || 'none' }}, pcntl, tokenizer, fileinfo, dom, xml, xmlwriter, mbstring, curl, json"
 
             -   uses: "ramsey/composer-install@v2"
 
@@ -34,7 +34,7 @@ jobs:
 
             -   uses: codecov/codecov-action@v2
                 with:
-                    name: "phpunit-php${{ matrix.php-version }}"
+                    name: "phpunit-php${{ matrix.php }}"
                     flags: phpunit
                     fail_ci_if_error: true
                 continue-on-error: true
