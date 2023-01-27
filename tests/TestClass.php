@@ -18,12 +18,12 @@ class TestClass
 {
     use Invocation;
 
-    public function handle()
+    public function handle(): string
     {
         return 'ok!';
     }
 
-    public function handleException()
+    public function handleException(): void
     {
         throw new TestException('ok!');
     }

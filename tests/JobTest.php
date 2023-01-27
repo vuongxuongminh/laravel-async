@@ -19,14 +19,14 @@ class JobTest extends TestCase
     /**
      * @dataProvider successJobProvider
      */
-    public function testHandleSuccess($handler, array $events)
+    public function testHandleSuccess($handler, array $events): void
     {
         Async::run($handler, $events);
 
         $this->assertStringContainsString('ok!', current(Async::wait()));
     }
 
-    public function testBatchHandleSuccess()
+    public function testBatchHandleSuccess(): void
     {
         Async::batchRun(...$this->successJobProvider());
 
@@ -38,19 +38,19 @@ class JobTest extends TestCase
     /**
      * @dataProvider errorJobProvider
      */
-    public function testHandleError($handler, array $events)
+    public function testHandleError($handler, array $events): void
     {
         Async::run($handler, $events);
         $this->assertEmpty(Async::wait());
     }
 
-    public function testBatchHandleError()
+    public function testBatchHandleError(): void
     {
         Async::batchRun(...$this->errorJobProvider());
         $this->assertEmpty(Async::wait());
     }
 
-    public function testMaxOutputLength()
+    public function testMaxOutputLength(): void
     {
         Async::getPool()->defaultOutputLength(2);
         Async::run(TestClass::class);
@@ -67,7 +67,7 @@ class JobTest extends TestCase
                 ],
             ],
             [
-                new TestClass,
+                new TestClass(),
                 [
                     'success' => 'VXM\Async\Tests\EventTestClass@success',
                 ],
@@ -87,7 +87,7 @@ class JobTest extends TestCase
     {
         return [
             [
-                TestClass::class.'@handleException',
+                TestClass::class . '@handleException',
                 [
                     'error' => 'VXM\Async\Tests\EventTestClass@catch',
                 ],

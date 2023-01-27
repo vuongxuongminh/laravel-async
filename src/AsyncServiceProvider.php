@@ -8,7 +8,6 @@
 
 namespace VXM\Async;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use VXM\Async\Commands\JobMakeCommand;
 
@@ -16,7 +15,7 @@ use VXM\Async\Commands\JobMakeCommand;
  * @author Vuong Minh <vuongxuongminh@gmail.com>
  * @since 1.0.0
  */
-class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProvider
+class AsyncServiceProvider extends BaseServiceProvider
 {
     /**
      * Package boot.
@@ -32,13 +31,11 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
     protected function publishConfigs(): void
     {
         $this->publishes([
-            __DIR__.'/../config/async.php' => config_path('async.php'),
+            __DIR__ . '/../config/async.php' => config_path('async.php'),
         ], 'config');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function register(): void
     {
         $this->mergeDefaultConfigs();
@@ -51,7 +48,7 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
      */
     protected function mergeDefaultConfigs(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/async.php', 'async');
+        $this->mergeConfigFrom(__DIR__ . '/../config/async.php', 'async');
     }
 
     /**
@@ -68,7 +65,7 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
         $this->app->singleton('async.pool', function ($app) {
             $pool = new Pool();
             $config = $app['config']->get('async');
-            $pool->autoload($config['autoload'] ?? __DIR__.'/Runtime/RuntimeAutoload.php');
+            $pool->autoload($config['autoload'] ?? __DIR__ . '/Runtime/RuntimeAutoload.php');
             $pool->concurrency($config['concurrency']);
             $pool->timeout($config['timeout']);
             $pool->sleepTime($config['sleepTime']);
@@ -87,13 +84,5 @@ class AsyncServiceProvider extends BaseServiceProvider implements DeferrableProv
         if ($this->app->runningInConsole()) {
             $this->commands(['command.async.make']);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function provides(): array
-    {
-        return ['async', 'async.pool', 'command.async.make'];
     }
 }

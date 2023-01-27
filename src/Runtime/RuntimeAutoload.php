@@ -10,7 +10,7 @@ define('LARAVEL_START', microtime(true));
 
 use Illuminate\Foundation\Application;
 
-new class {
+new class() {
     /**
      *  Turn the light on.
      */
@@ -27,10 +27,10 @@ new class {
     protected function registerComposerAutoload(): void
     {
         $autoloadFiles = [
-            __DIR__.'/../../../../autoload.php',
-            __DIR__.'/../../../autoload.php',
-            __DIR__.'/../../vendor/autoload.php',
-            __DIR__.'/../../../vendor/autoload.php',
+            __DIR__ . '/../../../../autoload.php',
+            __DIR__ . '/../../../autoload.php',
+            __DIR__ . '/../../vendor/autoload.php',
+            __DIR__ . '/../../../vendor/autoload.php',
         ];
 
         $autoloadFile = current(array_filter($autoloadFiles, function (string $path) {
@@ -46,8 +46,6 @@ new class {
 
     /**
      * Boot an application.
-     *
-     * @param  Application  $app
      */
     protected function boot(Application $app): void
     {
@@ -56,8 +54,6 @@ new class {
 
     /**
      * Make an application and register services.
-     *
-     * @return Application
      */
     protected function makeApplication(): Application
     {

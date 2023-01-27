@@ -20,10 +20,8 @@ class Pool extends BasePool
 {
     /**
      * Default processes output length.
-     *
-     * @var int
      */
-    protected $defaultOutputLength = 10240;
+    protected int $defaultOutputLength = 10240;
 
     /**
      * Flush the pool.
@@ -38,9 +36,7 @@ class Pool extends BasePool
         $this->results = [];
     }
 
-    /**
-     * @inheritDoc
-     */
+
     public function add($process, int $outputLength = null): Runnable
     {
         $outputLength = $outputLength ?? $this->defaultOutputLength;
@@ -59,7 +55,6 @@ class Pool extends BasePool
     /**
      * Set default output length of child processes.
      *
-     * @param  int  $defaultOutputLength
      * @since 2.1.0
      */
     public function defaultOutputLength(int $defaultOutputLength): void

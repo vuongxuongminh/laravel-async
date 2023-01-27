@@ -7,7 +7,6 @@
 
 namespace VXM\Async\Runtime;
 
-use Spatie\Async\Pool;
 use Spatie\Async\Process\ParallelProcess;
 use Spatie\Async\Process\Runnable;
 use Spatie\Async\Process\SynchronousProcess;
@@ -22,28 +21,23 @@ use Symfony\Component\Process\Process;
  */
 class ParentRuntime extends BaseParentRuntime
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function createProcess($task, ?int $outputLength = null, ?string $binary = 'php'): Runnable
     {
-        if (! self::$isInitialised) {
-            self::init();
-        }
+        $runnable = parent::createProcess($task, $outputLength, $binary);
 
-        if (! Pool::isSupported()) {
-            return new SynchronousProcess($task, self::getId());
+        if ($runnable instanceof SynchronousProcess) {
+            return $runnable;
         }
 
         $process = new Process([
             $binary,
-            self::$childProcessScript,
-            self::$autoloader,
-            self::encodeTask($task),
+            static::$childProcessScript,
+            static::$autoloader,
+            static::encodeTask($task),
             $outputLength,
             base_path(),
         ]);
 
-        return new ParallelProcess($process, self::getId());
+        return ParallelProcess::create($process, self::getId());
     }
 }

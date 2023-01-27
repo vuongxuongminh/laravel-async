@@ -39,12 +39,10 @@ class JobMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
-        return __DIR__.'/stubs/job.stub';
+        return __DIR__ . '/stubs/job.stub';
     }
 
     /**
@@ -55,6 +53,6 @@ class JobMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\AsyncJobs';
+        return $rootNamespace . '\AsyncJobs';
     }
 }

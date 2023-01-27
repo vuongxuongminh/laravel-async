@@ -18,12 +18,12 @@ use VXM\Async\AsyncServiceProvider;
  */
 class TestCase extends BaseTestCase
 {
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [AsyncServiceProvider::class];
     }
 
-    protected function getPackageAliases($app)
+    protected function getPackageAliases($app): array
     {
         return [
             'Async' => AsyncFacade::class,

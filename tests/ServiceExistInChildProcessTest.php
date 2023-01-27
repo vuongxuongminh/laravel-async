@@ -16,7 +16,7 @@ use Async;
  */
 class ServiceExistInChildProcessTest extends TestCase
 {
-    public function testBaseServicesExist()
+    public function testBaseServicesExist(): void
     {
         Async::run(function () {
             return app()->has('events') && app()->has('log') && app()->has('router');

@@ -12,7 +12,6 @@ use Closure;
 use Illuminate\Contracts\Events\Dispatcher as EventDispatcher;
 use Illuminate\Support\Str;
 use Spatie\Async\Process\Runnable;
-use VXM\Async\Runtime\ParentRuntime;
 
 /**
  * @author Vuong Minh <vuongxuongminh@gmail.com>
@@ -20,42 +19,13 @@ use VXM\Async\Runtime\ParentRuntime;
  */
 class Async
 {
-    /**
-     * A pool manage async processes.
-     *
-     * @var Pool
-     */
-    protected $pool;
-
-    /**
-     * Event dispatcher manage async events.
-     *
-     * @var EventDispatcher
-     */
-    protected $events;
-
-    /**
-     * Create a new Async instance.
-     *
-     * @param  \VXM\Async\Pool  $pool
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
-     */
-    public function __construct(Pool $pool, EventDispatcher $events)
-    {
-        $this->pool = $pool;
-        $this->events = $events;
+    public function __construct(
+        protected Pool $pool,
+        protected EventDispatcher $events,
+    ) {
     }
 
-    /**
-     * Execute async job.
-     *
-     * @param  callable|string|object  $job  need to execute.
-     * @param  array  $events  event. Have key is an event name, value is a callable triggered when event
-     *                                       happen, have three events `error`, `success`, `timeout`.
-     * @param  int|null  $outputLength
-     * @return static
-     */
-    public function run($job, array $events = [], int $outputLength = null): self
+    public function run(callable|string|object $job, array $events = [], int $outputLength = null): static
     {
         $process = $this->pool->add($this->makeJob($job), $outputLength);
 
@@ -68,15 +38,7 @@ class Async
         return $this;
     }
 
-    /**
-     * Batch execute async jobs.
-     *
-     * @param  array  $jobs
-     * @return static
-     * @see run()
-     * @since 2.0.0
-     */
-    public function batchRun(...$jobs): self
+    public function batchRun(...$jobs): static
     {
         foreach ($jobs as $job) {
             $events = [];
@@ -96,12 +58,7 @@ class Async
         return $this;
     }
 
-    /**
-     * Wait until all async jobs done and return job results.
-     *
-     * @return array
-     */
-    public function wait()
+    public function wait(): array
     {
         $results = $this->pool->wait();
         $this->pool->flush();
@@ -109,14 +66,7 @@ class Async
         return $results;
     }
 
-    /**
-     * Make async job.
-     *
-     * @param $job
-     *
-     * @return mixed
-     */
-    protected function makeJob($job)
+    protected function makeJob($job): mixed
     {
         if (is_string($job)) {
             return $this->createClassJob($job);
@@ -125,28 +75,15 @@ class Async
         return $job;
     }
 
-    /**
-     * Create class and method job.
-     *
-     * @param  string  $job
-     *
-     * @return Closure
-     */
     protected function createClassJob(string $job): Closure
     {
         [$class, $method] = Str::parseCallback($job, 'handle');
 
         return function () use ($class, $method) {
-            return app()->call($class.'@'.$method);
+            return app()->call($class . '@' . $method);
         };
     }
 
-    /**
-     * Listen events of process given.
-     *
-     * @param  array  $events
-     * @param  Runnable  $process
-     */
     protected function addProcessListeners(array $events, Runnable $process): void
     {
         foreach ($events as $event => $callable) {
@@ -154,14 +91,6 @@ class Async
         }
     }
 
-    /**
-     * Make a base listener for integration with [[EventDispatcher]].
-     *
-     * @param  string  $event
-     * @param  Runnable  $process
-     *
-     * @return callable
-     */
     protected function makeProcessListener(string $event, Runnable $process): callable
     {
         return function (...$args) use ($event, $process) {
@@ -172,22 +101,8 @@ class Async
     }
 
     /**
-     * Create a new process for run a job.
-     *
-     * @param  callable  $job  need to execute.
-     *
-     * @return Runnable process.
-     * @deprecated since 2.1.0
-     */
-    protected function createProcess($job): Runnable
-    {
-        return ParentRuntime::createProcess($job);
-    }
-
-    /**
      * Get current pool.
      *
-     * @return Pool
      * @since 2.1.0
      */
     public function getPool(): Pool
