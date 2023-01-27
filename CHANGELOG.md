@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+
+- Drop support for older Laravel versions lower than 9.
+- Require PHP 8.1 or above.
+- Migrate from TravisCI to GitHub actions.
+- 
+
 ## 2.2.0
 
 - Add support for Laravel 9.
