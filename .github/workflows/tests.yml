@@ -14,8 +14,8 @@ jobs:
                 php:
                     - 8.1
                 extensions:
-                    - none, mbstring, curl, pcntl
-                    - none, mbstring, curl
+                    - none, ext-dom, mbstring, curl, pcntl
+                    - none, ext-dom, mbstring, curl
 
         name: PHP ${{ matrix.php }} tests
 
