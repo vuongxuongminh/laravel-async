@@ -10,10 +10,6 @@ namespace VXM\Async\Tests;
 
 use Exception;
 
-/**
- * @author Vuong Minh <vuongxuongminh@gmail.com>
- * @since 1.0.0
- */
 class TestException extends Exception
 {
 }

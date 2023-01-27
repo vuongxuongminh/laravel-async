@@ -12,10 +12,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 use VXM\Async\AsyncFacade;
 use VXM\Async\AsyncServiceProvider;
 
-/**
- * @author Vuong Minh <vuongxuongminh@gmail.com>
- * @since 1.0.0
- */
 class TestCase extends BaseTestCase
 {
     protected function getPackageProviders($app): array

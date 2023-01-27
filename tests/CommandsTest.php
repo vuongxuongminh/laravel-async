@@ -8,10 +8,6 @@
 
 namespace VXM\Async\Tests;
 
-/**
- * @author Vuong Minh <vuongxuongminh@gmail.com>
- * @since 1.0.0
- */
 class CommandsTest extends TestCase
 {
     public function testJobMake(): void

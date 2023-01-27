@@ -10,10 +10,6 @@ namespace VXM\Async\Tests;
 
 use Async;
 
-/**
- * @author Vuong Minh <vuongxuongminh@gmail.com>
- * @since 1.0.0
- */
 class JobTest extends TestCase
 {
     /**
