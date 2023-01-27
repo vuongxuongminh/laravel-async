@@ -5,7 +5,7 @@
 - Drop support for older Laravel versions lower than 9.
 - Require PHP 8.1 or above.
 - Migrate from TravisCI to GitHub actions.
-- 
+- Refactor syntax.
 
 ## 2.2.0
 
