@@ -6,9 +6,8 @@
     <br>
     <p align="center">
     <a href="https://packagist.org/packages/vxm/laravel-async"><img src="https://img.shields.io/packagist/v/vxm/laravel-async.svg?style=flat-square" alt="Latest version"></a>
-    <a href="https://travis-ci.org/vuongxuongminh/laravel-async"><img src="https://img.shields.io/travis/vuongxuongminh/laravel-async/master.svg?style=flat-square" alt="Build status"></a>
-    <a href="https://scrutinizer-ci.com/g/vuongxuongminh/laravel-async"><img src="https://img.shields.io/scrutinizer/g/vuongxuongminh/laravel-async.svg?style=flat-square" alt="Quantity score"></a>
-    <a href="https://styleci.io/repos/191031210"><img src="https://styleci.io/repos/191031210/shield?branch=master" alt="StyleCI"></a>
+    <a href="https://github.com/vuongxuongminh/laravel-async/actions/workflows/tests.yml"><img src="https://github.com/vuongxuongminh/laravel-async/actions/workflows/tests.yml/badge.svg?branch=main" alt="Build status"></a>
+    <a href="https://codecov.io/github/vuongxuongminh/laravel-async"><img src="https://codecov.io/github/vuongxuongminh/laravel-async/branch/main/graph/badge.svg?token=8F1ZTFB2C3"/></a>
     <a href="https://packagist.org/packages/vxm/laravel-async"><img src="https://img.shields.io/packagist/dt/vxm/laravel-async.svg?style=flat-square" alt="Total download"></a>
     <a href="https://packagist.org/packages/vxm/laravel-async"><img src="https://img.shields.io/packagist/l/vxm/laravel-async.svg?style=flat-square" alt="License"></a>
     </p>
@@ -16,7 +15,8 @@
 
 ## About it
 
-A package provide an easy way to run code asynchronous and parallel base on [Spatie Async](https://github.com/spatie/async) wrapper for Laravel application.
+A package provide an easy way to run code asynchronous and parallel base
+on [Spatie Async](https://github.com/spatie/async) wrapper for Laravel application.
 
 ## Installation
 
@@ -70,6 +70,7 @@ return [
     'autoload' => null,
 ];
 ```
+
 ## Usage
 
 ### Run async code
@@ -77,7 +78,7 @@ return [
 After install, now you can try run async code via `Async` facade:
 
 ```php
-use Async;
+use VXM\Async\AsyncFacade as Async;
 
 for ($i = 1; $i < 20; $i++) {
     Async::run(function () use ($i) {
@@ -96,7 +97,7 @@ var_dump(implode(', ', Async::wait()));
 An async job can be callable class, anonymous function or Laravel callback:
 
 ```php
-use Async;
+use VXM\Async\AsyncFacade as Async;
 
 // run with anonymous function:
 Async::run(function() {
@@ -113,7 +114,7 @@ Async::run('Your\AsyncJobs\Class');
 You can run multiple job one time and waiting until all done.
 
 ```php
-use Async;
+use VXM\Async\AsyncFacade as Async;
 
 Async::run('Your\AsyncJobs\Class@jobA');
 Async::run('Your\AsyncJobs\Class@jobB');
@@ -137,7 +138,7 @@ $results = Async::wait(); // result return from jobs above
 When creating asynchronous processes, you can add the following event hooks:
 
 ```php
-use Async;
+use VXM\Async\AsyncFacade as Async;
 
 Async::run(function () {
 
@@ -170,9 +171,11 @@ Async::batchRun(
 
 ## Working with complex job
 
-When working with complex job you may want to setup more before it run (ex: job depend on Eloquent model). This package provide you an Artisan command `make:async-job` to generate a job template. 
-By default, all of the async jobs for your application are stored in the `app/AsyncJobs` directory. 
-If the `app/AsyncJobs` directory doesn't exist, it will be created. You may generate a new async job using the Artisan CLI:
+When working with complex job you may want to setup more before it run (ex: job depend on Eloquent model). This package
+provide you an Artisan command `make:async-job` to generate a job template.
+By default, all of the async jobs for your application are stored in the `app/AsyncJobs` directory.
+If the `app/AsyncJobs` directory doesn't exist, it will be created. You may generate a new async job using the Artisan
+CLI:
 
 ```php
 php artisan make:async-job MyJob
@@ -218,16 +221,22 @@ class MyJob
 }
 ```
 
-In this example, note that we were able to pass an Eloquent model directly into the async job's constructor. 
-Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. 
-If your async job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. 
-When the job is actually handled, the system will automatically re-retrieve the full model instance from the database. 
-It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+In this example, note that we were able to pass an Eloquent model directly into the async job's constructor.
+Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and
+unserialized when the job is processing.
+If your async job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized
+onto the queue.
+When the job is actually handled, the system will automatically re-retrieve the full model instance from the database.
+It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model
+instances.
 
-The `handle` method is called when the job is processed in async process. Note that we are able to type-hint dependencies on the handle method of the job. 
+The `handle` method is called when the job is processed in async process. Note that we are able to type-hint
+dependencies on the handle method of the job.
 The Laravel service container automatically injects these dependencies.
 
-If you would like to take total control over how the container injects dependencies into the handle method, you may use the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the container. Within the callback, you are free to invoke the handle method however you wish. 
+If you would like to take total control over how the container injects dependencies into the handle method, you may use
+the container's `bindMethod` method. The `bindMethod` method accepts a callback which receives the job and the
+container. Within the callback, you are free to invoke the handle method however you wish.
 Typically, you should call this method from a service provider:
 
 ```php
@@ -242,7 +251,7 @@ $this->app->bindMethod(MyJob::class.'@handle', function ($job, $app) {
 Now run it asynchronously:
 
 ```php
-use Async;
+use VXM\Async\AsyncFacade as Async;
 use App\MyModel;
 use App\AsyncJobs\MyJob;
 
@@ -262,7 +271,9 @@ Async::batchRun(
 
 ## Compare with queue
 
-You can feel this package look like queue and thing why not using queue? 
+You can feel this package look like queue and thing why not using queue?
 
-Queue is a good choice for common async jobs. This package using in cases end-user need to get response in single request but 
-it's a heavy things need to using several processes for calculation or IO heavy operations. And it no need to run a queue listener.
+Queue is a good choice for common async jobs. This package using in cases end-user need to get response in single
+request but
+it's a heavy things need to using several processes for calculation or IO heavy operations. And it no need to run a
+queue listener.
