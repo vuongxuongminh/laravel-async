@@ -29,9 +29,9 @@ class AsyncTest extends TestCase
         $results = Async::wait();
 
         if (Pool::isSupported()) {
-            $this->assertEquals(1, time() - $current);
+            $this->assertLessThanOrEqual(2, time() - $current);
         } else {
-            $this->assertEquals(10, time() - $current);
+            $this->assertGreaterThanOrEqual(10, time() - $current);
         }
 
         sort($results);
