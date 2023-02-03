@@ -15,11 +15,11 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/support": "^9.0",
+        "illuminate/support": "^10.0",
         "spatie/async": "^1.5"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.0",
+        "orchestra/testbench": "^8.0",
         "symplify/easy-coding-standard": "^11.2"
     },
     "autoload": {
@@ -47,5 +47,5 @@
                 "VXM\\Async\\AsyncServiceProvider"
             ]
         }
-	}
+    }
 }
