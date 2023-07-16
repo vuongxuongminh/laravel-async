@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.0
+
+- Add support Laravel 10 and drop support Laravel 9.
+- Bump version and migrate syntax of PHPUnit.
+
 ## 3.0.0
 
 - Drop support for older Laravel versions lower than 9.

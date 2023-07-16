@@ -2,7 +2,7 @@
 .buildpath
 .project
 .settings
-.phpunit.result.cache
+.phpunit.cache
 .idea
 build
 composer.lock

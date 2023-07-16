@@ -9,46 +9,55 @@
 namespace VXM\Async\Tests;
 
 use Async;
+use PHPUnit\Framework\Attributes\DataProvider;
 use VXM\Async\Pool;
 
 class JobTest extends TestCase
 {
-    /**
-     * @dataProvider successJobProvider
-     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->forgetInstance(EventTestClass::class);
+        $this->app->singleton(EventTestClass::class);
+    }
+
+    #[DataProvider('successJobProvider')]
     public function testHandleSuccess($handler, array $events): void
     {
         Async::run($handler, $events);
 
         $this->assertStringContainsString('ok!', current(Async::wait()));
+        $this->assertStringContainsString('ok!', $this->app->get(EventTestClass::class)->capture);
     }
 
     public function testBatchHandleSuccess(): void
     {
-        Async::batchRun(...$this->successJobProvider());
+        Async::batchRun(...self::successJobProvider());
 
         foreach (Async::wait() as $result) {
             $this->assertStringContainsString('ok!', $result);
+            $this->assertStringContainsString('ok!', $this->app->get(EventTestClass::class)->capture);
         }
     }
 
-    /**
-     * @dataProvider errorJobProvider
-     */
+    #[DataProvider('errorJobProvider')]
     public function testHandleError($handler, array $events): void
     {
         Async::run($handler, $events);
         $results = array_filter(Async::wait());
 
         $this->assertEmpty($results);
+        $this->assertInstanceOf(\Exception::class, $this->app->get(EventTestClass::class)->capture);
     }
 
     public function testBatchHandleError(): void
     {
-        Async::batchRun(...$this->errorJobProvider());
+        Async::batchRun(...self::errorJobProvider());
         $results = array_filter(Async::wait());
 
         $this->assertEmpty($results);
+        $this->assertInstanceOf(\Exception::class, $this->app->get(EventTestClass::class)->capture);
     }
 
     public function testMaxOutputLength(): void
@@ -64,7 +73,7 @@ class JobTest extends TestCase
         }
     }
 
-    public function successJobProvider(): array
+    public static function successJobProvider(): array
     {
         return [
             [
@@ -90,7 +99,7 @@ class JobTest extends TestCase
         ];
     }
 
-    public function errorJobProvider(): array
+    public static function errorJobProvider(): array
     {
         return [
             [
