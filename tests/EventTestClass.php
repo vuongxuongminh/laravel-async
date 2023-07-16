@@ -10,15 +10,17 @@ namespace VXM\Async\Tests;
 
 use Exception;
 
-class EventTestClass extends TestCase
+class EventTestClass
 {
+    public string|Exception $capture;
+
     public function success($result)
     {
-        $this->assertStringContainsString('ok!', $result);
+        $this->capture = $result;
     }
 
     public function catch(Exception $exception)
     {
-        $this->assertStringContainsString('ok!', $exception->getMessage());
+        $this->capture = $exception;
     }
 }
