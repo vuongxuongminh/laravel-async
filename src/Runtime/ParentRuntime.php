@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
  */
 class ParentRuntime extends BaseParentRuntime
 {
-    public static function createProcess($task, ?int $outputLength = null, ?string $binary = 'php'): Runnable
+    public static function createProcess($task, ?int $outputLength = null, ?string $binary = 'php', ?int $max_input_size = 100000): Runnable
     {
         $runnable = parent::createProcess($task, $outputLength, $binary);
 
