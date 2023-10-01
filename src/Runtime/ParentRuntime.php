@@ -23,7 +23,7 @@ class ParentRuntime extends BaseParentRuntime
 {
     public static function createProcess($task, ?int $outputLength = null, ?string $binary = 'php', ?int $max_input_size = 100000): Runnable
     {
-        $runnable = parent::createProcess($task, $outputLength, $binary);
+        $runnable = parent::createProcess($task, $outputLength, $binary, $max_input_size);
 
         if ($runnable instanceof SynchronousProcess) {
             return $runnable;
