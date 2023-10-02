@@ -16,7 +16,7 @@
     "require": {
         "php": "^8.1",
         "illuminate/support": "^10.0",
-        "spatie/async": "^1.5"
+        "spatie/async": "^1.6"
     },
     "require-dev": {
         "orchestra/testbench": "^8.0",
