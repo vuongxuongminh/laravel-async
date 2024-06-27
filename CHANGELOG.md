@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.0
+
+- Add support Laravel 11
+
 ## 4.0.0
 
 - Add support Laravel 10 and drop support Laravel 9.
